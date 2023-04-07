@@ -118,6 +118,9 @@ class _DictMixin:
     __registry__: _Registry
 
     def __getitem__(self, key: str) -> Type:
+        # If passed a URI, use the URI's scheme as the regsitry key str
+        # E.g. convert "snowflake://abcd1234" into "snowflake"
+        key = key.split("://")[0]
         return self.__registry__.config.getitem(self.__registry__, key)
 
     def __iter__(self) -> Generator[str, None, None]:
